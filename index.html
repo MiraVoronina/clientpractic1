@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>Product App</title>
+    <!-- Подключение Vue.js через CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- Подключение файла со стилями -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Подключение основного JavaScript-файла -->
+    <script defer src="js/main.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="product">
+        <div class="product-image">
+            <img :src="image" :alt="altText"/>
+        </div>
+        <div class="product-info">
+            <h1>{{ title }}</h1>
+            <p v-if="inStock">In stock</p>
+            <p v-else>Out of Stock</p>
+            <ul>
+                <li v-for="detail in details">{{ detail }}</li>
+            </ul>
+            <div class="color-box"
+                 v-for="(variant, index) in variants"
+                 :key="variant.variantId"
+                 :style="{ backgroundColor: variant.variantColor }"
+                 @mouseover="updateProduct(index)">
+            </div>
+            <div id="app">
+                <div class="cart"><p>Cart({{ cart }})</p></div>
+                <product :premium="premium"></product>
+            </div>
+            <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">
+                Add to cart
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
