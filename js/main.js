@@ -6,7 +6,7 @@ Vue.component('product-review', {
         <ul>
           <li v-for="error in errors">{{ error }}</li>
         </ul>
-        </p>   <p><label for="name">Name:</label> <input id="name" v-model="name" placeholder="name"></p>
+        <p><label for="name">Name:</label> <input id="name" v-model="name" placeholder="name"></p>
         <p><label for="review">Review:</label> <textarea id="review" v-model="review"></textarea></p>
         <p><label for="rating">Rating:</label> <select id="rating" v-model.number="rating">
           <option>5</option>
@@ -25,7 +25,7 @@ Vue.component('product-review', {
                     review: this.review,
                     rating: this.rating
                 }
-                this.$emit('review-submitted', productReview)
+                eventBus.$emit('review-submitted', productReview)
                 this.name = null
                 this.review = null
                 this.rating = null
@@ -38,6 +38,11 @@ Vue.component('product-review', {
     }
 })
 Vue.component('product', {
+    mounted() {
+        eventBus.$on('review-submitted', productReview => {
+            this.reviews.push(productReview)
+        })
+    },
     props: {premium: {type: Boolean, required: true}},
     template: `
       <div class="product">
@@ -86,30 +91,37 @@ Vue.component('product', {
         }
     },
     methods: {
-        addToCart() {
-            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
-        }, updateProduct(index) {
-            this.selectedVariant = index;
-            console.log(index);
-        }, addReview(productReview) {
-            this.reviews.push(productReview)
+        mounted() {
+            eventBus.$on('review-submitted', productReview => {
+                this.reviews.push(productReview)
+            })
         }
+    }, updateProduct(index) {
+        this.selectedVariant = index;
+        console.log(index);
     },
-    computed: {
-        title() {
-            return this.brand + ' ' + this.product;
-        }, image() {
-            return this.variants[this.selectedVariant].variantImage;
-        }, inStock() {
-            return this.variants[this.selectedVariant].variantQuantity
-        }, shipping() {
-            if (this.premium) {
-                return "Free";
-            } else {
-                return 2.99
+    computed:
+        {
+            title() {
+                return this.brand + ' ' + this.product;
+            }
+            ,
+            image() {
+                return this.variants[this.selectedVariant].variantImage;
+            }
+            ,
+            inStock() {
+                return this.variants[this.selectedVariant].variantQuantity
+            }
+            ,
+            shipping() {
+                if (this.premium) {
+                    return "Free";
+                } else {
+                    return 2.99
+                }
             }
         }
-    }
 })
 Vue.component('product-tabs', {
     template: `
@@ -124,7 +136,7 @@ Vue.component('product-tabs', {
           </ul>
         </div>
         <div v-show="selectedTab === 'Make a Review'">
-          <product-review @review-submitted="addReview"></product-review>
+          <product-review></product-review>
         </div>
       </div> `, data() {
         return {
