@@ -11833,6 +11833,7 @@
         var el = query(id);
         return el && el.innerHTML;
     });
+
     var mount = Vue.prototype.$mount;
     Vue.prototype.$mount = function (el, hydrating) {
         el = el && query(el);

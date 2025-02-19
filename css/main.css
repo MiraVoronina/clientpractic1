@@ -12,8 +12,18 @@ body {
 
 .product {
     display: flex;
-    flex-flow: wrap;
-    padding: 1rem;
+    align-items: center;
+}
+
+.color-box {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.disabledButton {
+    background-color: #cccccc;
+    pointer-events: none;
 }
 
 img {
@@ -24,7 +34,7 @@ img {
 }
 
 .product-image {
-    width: 80%;
+    margin-right: 20px;
 }
 
 .product-image,
@@ -33,11 +43,7 @@ img {
     width: 50%;
 }
 
-.color-box {
-    width: 40px;
-    height: 40px;
-    margin-top: 5px;
-}
+
 
 .cart {
     margin-right: 25px;
