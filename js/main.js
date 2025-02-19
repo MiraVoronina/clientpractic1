@@ -31,6 +31,12 @@ let app = new Vue({
         updateProduct(index) {
             this.selectedVariant = index;
             console.log(index);
+        },
+        removeItemFromCart(id) {
+            const index = this.cart.indexOf(id);
+            if (index !== -1) {
+                this.cart.splice(index, 1);
+            }
         }
     },
     computed: {
